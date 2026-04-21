@@ -1,11 +1,11 @@
 ; ============================================================
 ;  BM_AGR_PARAM Inno Setup Script
-;  SEAMLESS HOT-RELOAD - Version 5.2.1
+;  BULLETPROOF HOT-RELOAD - Version 6.0.0
 ; ============================================================
 
 #define AppName      "BM AGR Parameter Manager"
 #ifndef AppVersion
-  #define AppVersion "5.2.1"
+  #define AppVersion "6.0.0"
 #endif
 #define AppPublisher "BuroMoscow"
 #define AddinTarget  "{userappdata}\Autodesk\Revit\Addins\2023"
@@ -30,13 +30,32 @@ CloseApplications=no
 Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
 
 [Files]
-; Загрузчик: если занят - просто планируем замену (без ошибки), логика все равно обновится
-Source: "{#BuildDir}\BM_AGR_Loader.dll"; DestDir: "{app}"; Flags: ignoreversion restartreplace uninsrestartdelete
-; Логика: обновляется всегда мгновенно
+; Загрузчик: Проверяем блокировку. Если занято - просто МОЛЧА пропускаем.
+Source: "{#BuildDir}\BM_AGR_Loader.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: not IsLoaderLocked
+; Логика: обновляется ВСЕГДА (она никогда не блокируется)
 Source: "{#BuildDir}\BM_AGR_PARAM.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BuildDir}\version.txt"; DestDir: "{app}"; Flags: ignoreversion
 
 [Code]
+// Проверка блокировки файла через попытку переименования в самого себя
+function IsLoaderLocked(): Boolean;
+var
+  FileName: String;
+begin
+  Result := False;
+  FileName := ExpandConstant('{app}\BM_AGR_Loader.dll');
+  
+  if FileExists(FileName) then
+  begin
+    // Если мы не можем переименовать файл (даже в самого себя), значит он заблокирован
+    if not RenameFile(FileName, FileName) then
+    begin
+      Log('LOADER IS LOCKED (Revit is running). Skipping update of BM_AGR_Loader.dll');
+      Result := True;
+    end;
+  end;
+end;
+
 procedure CurStepChanged(TSetupStep: TSetupStep);
 var
   AddinFile : String;
