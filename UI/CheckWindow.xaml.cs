@@ -26,9 +26,16 @@ namespace BM_AGR_PARAM.UI
             _service = new AgrService(doc);
             this.DataContext = this;
             
-            // Динамический заголовок с версией
-            var version = System.Diagnostics.FileVersionInfo.GetVersionInfo(
-                System.Reflection.Assembly.GetExecutingAssembly().Location).FileVersion;
+            // Безопасное получение версии для Hot Reload (Location может быть пуст)
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            string version = "7.1.1";
+            
+            try {
+                var attr = Attribute.GetCustomAttribute(assembly, typeof(System.Reflection.AssemblyFileVersionAttribute)) 
+                           as System.Reflection.AssemblyFileVersionAttribute;
+                if (attr != null) version = attr.Version;
+            } catch { }
+
             this.Title = $"BM AGR Parameter Manager v{version}";
 
             RefreshList();
