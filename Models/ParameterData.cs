@@ -8,11 +8,13 @@ namespace BM_AGR_PARAM.Models
         public string Name { get; set; }
         public string DisplayCategories { get; set; }
         public BuiltInCategory[] TargetCategories { get; set; }
+        public ForgeTypeId DataType { get; set; }
 
-        public ParameterRequirement(string name, string displayCategories, params BuiltInCategory[] targetCategories)
+        public ParameterRequirement(string name, string displayCategories, ForgeTypeId dataType, params BuiltInCategory[] targetCategories)
         {
             Name = name;
             DisplayCategories = displayCategories;
+            DataType = dataType;
             TargetCategories = targetCategories;
         }
     }

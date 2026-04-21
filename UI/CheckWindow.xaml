@@ -70,6 +70,14 @@
         </ScrollViewer>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+            <Button Content="Добавить параметры" Name="AddBtn" Click="AddParameters_Click" 
+                    Padding="20,10" Background="#2196F3" Foreground="White" 
+                    FontWeight="Bold" BorderThickness="0" Cursor="Hand" Margin="0,0,10,0">
+                <Button.Resources>
+                    <Style TargetType="Border"><Setter Property="CornerRadius" Value="4"/></Style>
+                </Button.Resources>
+            </Button>
+
             <Button Content="Проверить наличие" Click="Check_Click" 
                     Padding="20,10" Background="#2196F3" Foreground="White" 
                     FontWeight="Bold" BorderThickness="0" Cursor="Hand" Margin="0,0,10,0">

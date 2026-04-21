@@ -46,6 +46,20 @@ namespace BM_AGR_PARAM.UI
             Results = _service.CheckParameters();
         }
 
+        public void AddParameters_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                _service.CreateMissingParameters();
+                RefreshList();
+                MessageBox.Show("Недостающие параметры успешно созданы!", "АГР Параметры", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при создании параметров: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void Check_Click(object sender, RoutedEventArgs e)
         {
             RefreshList();
