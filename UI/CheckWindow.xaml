@@ -7,8 +7,6 @@
         Background="#F5F5F5">
     
     <Window.Resources>
-        <!-- ЗДЕСЬ БОЛЬШЕ НЕТ КАСТОМНЫХ КОНВЕРТЕРОВ -->
-        <!-- Это делает XAML совместимым с Hot Reload на 100% -->
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Window.Resources>
     
@@ -28,32 +26,44 @@
             <ItemsControl ItemsSource="{Binding Results}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Background="White" Margin="0,0,0,10" Padding="15" CornerRadius="8">
+                        <Border Background="White" Margin="0,0,0,10" Padding="15,10" CornerRadius="8">
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="5" Opacity="0.1" Direction="270"/>
                             </Border.Effect>
                             
-                            <Grid>
+                            <Grid VerticalAlignment="Center">
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180"/>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Requirement.Name}" FontWeight="SemiBold" FontSize="16" Foreground="#333"/>
-                                    <TextBlock Text="{Binding Requirement.DisplayCategories}" FontSize="12" Foreground="#999" Margin="0,2,0,0"/>
+                                <!-- Колонка 1: Имя параметра -->
+                                <TextBlock Grid.Column="0" Text="{Binding Requirement.Name}" 
+                                         FontWeight="SemiBold" FontSize="14" 
+                                         Foreground="#333" VerticalAlignment="Center"
+                                         TextTrimming="CharacterEllipsis"/>
+                                
+                                <!-- Колонка 2: Категории и предупреждения -->
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0">
+                                    <TextBlock Text="{Binding Requirement.DisplayCategories}" 
+                                             FontSize="11" Foreground="#999" 
+                                             TextTrimming="CharacterEllipsis"/>
                                     
-                                    <!-- Прямая привязка к заранее подготовленному тексту (без конвертеров!) -->
                                     <TextBlock Text="{Binding MissingCategoriesDescription}" 
-                                             Foreground="#F44336" 
-                                             FontSize="12" 
-                                             Margin="0,8,0,0"
-                                             TextWrapping="Wrap"
+                                             Foreground="#F44336" FontSize="11" 
+                                             FontWeight="SemiBold"
                                              Visibility="{Binding HasMissingCategories, Converter={StaticResource BoolToVis}}"/>
                                 </StackPanel>
 
-                                <Border Grid.Column="1" VerticalAlignment="Top" Padding="8,4" CornerRadius="4" Background="{Binding StatusColor}">
-                                    <TextBlock Text="{Binding StatusText}" Foreground="White" FontWeight="Bold" FontSize="11"/>
+                                <!-- Колонка 3: Статус (Отсутствует / ОК) -->
+                                <Border Grid.Column="2" VerticalAlignment="Center" 
+                                        Padding="10,4" CornerRadius="4" 
+                                        Background="{Binding StatusColor}"
+                                        MinWidth="80">
+                                    <TextBlock Text="{Binding StatusText}" 
+                                             Foreground="White" FontWeight="Bold" 
+                                             FontSize="11" HorizontalAlignment="Center"/>
                                 </Border>
                             </Grid>
                         </Border>
@@ -63,34 +73,19 @@
         </ScrollViewer>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-            <Button Content="Проверить наличие" 
-                    Click="Check_Click" 
-                    Padding="20,10" 
-                    Background="#2196F3" 
-                    Foreground="White" 
-                    FontWeight="Bold" 
-                    BorderThickness="0" 
-                    Cursor="Hand"
-                    Margin="0,0,10,0">
+            <Button Content="Проверить наличие" Click="Check_Click" 
+                    Padding="20,10" Background="#2196F3" Foreground="White" 
+                    FontWeight="Bold" BorderThickness="0" Cursor="Hand" Margin="0,0,10,0">
                 <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
-                    </Style>
+                    <Style TargetType="Border"><Setter Property="CornerRadius" Value="4"/></Style>
                 </Button.Resources>
             </Button>
             
-            <Button Content="Исправить привязки" 
-                    Click="Fix_Click" 
-                    Padding="20,10" 
-                    Background="#4CAF50" 
-                    Foreground="White" 
-                    FontWeight="Bold" 
-                    BorderThickness="0" 
-                    Cursor="Hand">
+            <Button Content="Исправить привязки" Click="Fix_Click" 
+                    Padding="20,10" Background="#4CAF50" Foreground="White" 
+                    FontWeight="Bold" BorderThickness="0" Cursor="Hand">
                 <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
-                    </Style>
+                    <Style TargetType="Border"><Setter Property="CornerRadius" Value="4"/></Style>
                 </Button.Resources>
             </Button>
         </StackPanel>
