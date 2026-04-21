@@ -168,7 +168,7 @@ namespace BM_AGR_PARAM.Services
 
                         // Привязываем как параметр экземпляра в группу "Данные"
                         InstanceBinding binding = _doc.Application.Create.NewInstanceBinding(cats);
-                        _doc.ParameterBindings.Insert(def, binding, GroupType.BuiltInGroup.PG_DATA);
+                        _doc.ParameterBindings.Insert(def, binding, GroupTypeId.Data);
                     }
 
                     trans.Commit();
