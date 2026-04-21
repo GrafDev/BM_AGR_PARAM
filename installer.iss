@@ -1,11 +1,11 @@
 ; ============================================================
 ;  BM_AGR_PARAM Inno Setup Script
-;  BULLETPROOF HOT-RELOAD - Version 6.0.0
+;  ETERNAL LOADER STRATEGY - Version 7.0.0
 ; ============================================================
 
 #define AppName      "BM AGR Parameter Manager"
 #ifndef AppVersion
-  #define AppVersion "6.0.0"
+  #define AppVersion "7.0.0"
 #endif
 #define AppPublisher "BuroMoscow"
 #define AddinTarget  "{userappdata}\Autodesk\Revit\Addins\2023"
@@ -23,39 +23,23 @@ SolidCompression=yes
 ArchitecturesAllowed=x64compatible
 PrivilegesRequired=lowest
 
-; ГОРЯЧЕЕ ОБНОВЛЕНИЕ БЕЗ ОШИБОК
+; УБИРАЕМ ВСЕ ПРОВЕРКИ ПРИЛОЖЕНИЙ
 CloseApplications=no
+RestartApplications=no
 
 [Languages]
 Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
 
 [Files]
-; Загрузчик: Проверяем блокировку. Если занято - просто МОЛЧА пропускаем.
-Source: "{#BuildDir}\BM_AGR_Loader.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: not IsLoaderLocked
-; Логика: обновляется ВСЕГДА (она никогда не блокируется)
+; ЗАГРУЗЧИК (Мостик): Ставим ТОЛЬКО если его еще нет. 
+; Это исключает любые ошибки "Access Denied" при обновлении.
+Source: "{#BuildDir}\BM_AGR_Loader.dll"; DestDir: "{app}"; Flags: ignoreversion onlyifdoesntexist
+
+; ЛОГИКА (Окно и функции): Обновляем всегда.
 Source: "{#BuildDir}\BM_AGR_PARAM.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BuildDir}\version.txt"; DestDir: "{app}"; Flags: ignoreversion
 
 [Code]
-// Проверка блокировки файла через попытку переименования в самого себя
-function IsLoaderLocked(): Boolean;
-var
-  FileName: String;
-begin
-  Result := False;
-  FileName := ExpandConstant('{app}\BM_AGR_Loader.dll');
-  
-  if FileExists(FileName) then
-  begin
-    // Если мы не можем переименовать файл (даже в самого себя), значит он заблокирован
-    if not RenameFile(FileName, FileName) then
-    begin
-      Log('LOADER IS LOCKED (Revit is running). Skipping update of BM_AGR_Loader.dll');
-      Result := True;
-    end;
-  end;
-end;
-
 procedure CurStepChanged(TSetupStep: TSetupStep);
 var
   AddinFile : String;
