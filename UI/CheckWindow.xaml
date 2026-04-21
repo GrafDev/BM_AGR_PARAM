@@ -26,9 +26,9 @@
             <ItemsControl ItemsSource="{Binding Results}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Background="White" Margin="0,0,0,10" Padding="15,10" CornerRadius="8">
+                        <Border Background="White" Margin="0,0,0,4" Padding="10,5" CornerRadius="6">
                             <Border.Effect>
-                                <DropShadowEffect BlurRadius="5" Opacity="0.1" Direction="270"/>
+                                <DropShadowEffect BlurRadius="3" Opacity="0.05" Direction="270"/>
                             </Border.Effect>
                             
                             <Grid VerticalAlignment="Center">
@@ -38,32 +38,29 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 
-                                <!-- Колонка 1: Имя параметра -->
                                 <TextBlock Grid.Column="0" Text="{Binding Requirement.Name}" 
-                                         FontWeight="SemiBold" FontSize="14" 
+                                         FontWeight="SemiBold" FontSize="13" 
                                          Foreground="#333" VerticalAlignment="Center"
                                          TextTrimming="CharacterEllipsis"/>
                                 
-                                <!-- Колонка 2: Категории и предупреждения -->
                                 <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0">
                                     <TextBlock Text="{Binding Requirement.DisplayCategories}" 
-                                             FontSize="11" Foreground="#999" 
+                                             FontSize="10.5" Foreground="#999" 
                                              TextTrimming="CharacterEllipsis"/>
                                     
                                     <TextBlock Text="{Binding MissingCategoriesDescription}" 
-                                             Foreground="#F44336" FontSize="11" 
-                                             FontWeight="SemiBold"
+                                             Foreground="#F44336" FontSize="10.5" 
+                                             FontWeight="Bold"
                                              Visibility="{Binding HasMissingCategories, Converter={StaticResource BoolToVis}}"/>
                                 </StackPanel>
 
-                                <!-- Колонка 3: Статус (Отсутствует / ОК) -->
                                 <Border Grid.Column="2" VerticalAlignment="Center" 
-                                        Padding="10,4" CornerRadius="4" 
+                                        Padding="8,3" CornerRadius="4" 
                                         Background="{Binding StatusColor}"
-                                        MinWidth="80">
+                                        MinWidth="75">
                                     <TextBlock Text="{Binding StatusText}" 
                                              Foreground="White" FontWeight="Bold" 
-                                             FontSize="11" HorizontalAlignment="Center"/>
+                                             FontSize="10.5" HorizontalAlignment="Center"/>
                                 </Border>
                             </Grid>
                         </Border>
