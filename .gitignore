@@ -1,0 +1,23 @@
+# Visual Studio
+.vs/
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Inno Setup Generated
+Build/Installer/*.exe
+
+# Revit
+*.backup.*
+*.bak
+*.log
+
+# Antigravity / Gemini files
+.gemini/
+.antigravityignore
+task.md
+implementation_plan.md
+walkthrough.md
